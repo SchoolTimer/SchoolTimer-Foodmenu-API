@@ -4,7 +4,7 @@ const POSTReqURL =
   "https://6266b23763e0f3825685c4a6.mockapi.io/LunchBreakfastAPI/";
 const url = "https://6266b23763e0f3825685c4a6.mockapi.io/LunchBreakfastAPI/1";
 
-function getGraphQLData() {
+async function getGraphQLData() {
   
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -47,21 +47,16 @@ function getGraphQLData() {
     })
     .then((data) => {
       let data1 = data;
-      let deploymentReadyData = { id: "1", data1 };
-      del();
-      submit(deploymentReadyData);
+      let deploymentReadyData = { id: "1", data };
+      updateDB(deploymentReadyData);
     });
 }
 
-getGraphQLData();
-
-async function del() {
-  fetch(url, { method: "DELETE" }).then(() =>
+async function updateDB(GraphQLData) {
+  await fetch(url, { method: "DELETE" }).then(() =>
     console.log("Successfully deleted")
   );
-}
 
-async function submit(GraphQLData) {
   const requestOptions = {
     method: "POST",
     headers: {
@@ -69,7 +64,11 @@ async function submit(GraphQLData) {
     },
     body: JSON.stringify(GraphQLData),
   };
-  fetch(POSTReqURL, requestOptions)
+  await fetch(POSTReqURL, requestOptions)
     .then((response) => response.json())
     .then((data) => console.log(data.id));
 }
+
+// Runs the main function
+getGraphQLData();
+
