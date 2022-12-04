@@ -67,7 +67,7 @@ async function getGraphQLData() {
       }
 
       // removes empty items from breakfast array
-      const breakfastFiltered = breakfastUnfiltered.filter((a) => a);
+      let breakfastFiltered = breakfastUnfiltered.filter((a) => a);
 
       // deletes "or" from lunch Object
       for (let i = 0; i < lunchObjSize; i++) {
@@ -78,7 +78,21 @@ async function getGraphQLData() {
       }
 
       // removes empty items from breakfast array
-      const lunchFiltered = lunchUnfiltered.filter((a) => a);
+      let lunchFiltered = lunchUnfiltered.filter((a) => a);
+
+      // Displays nothing on the menu if the object size of breakfast and lunch is 0
+      if (breakfastObjSize == 0 && lunchFiltered == 0) {
+        breakfastFiltered = [{
+          product: {
+            name: "Nothing on the menu!",
+          },
+        }];
+        lunchFiltered = [{
+          product: {
+            name: "Nothing on the menu!",
+          },
+        }];
+      }
 
       // stores and new and organized data
       const newData = {
